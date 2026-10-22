@@ -4,6 +4,8 @@ See any GitHub user's contribution graph for a specific month, styled like the p
 
 **Live:** https://gusmartins499.github.io/monthly-contributions/
 
+![Searching for GusMartins499 and viewing the month's contributions](docs/demo.gif)
+
 - Month calendar with GitHub's contribution levels
 - Total contributions, active days, longest streak and best day
 - Light/dark theme toggle (follows your system by default)
