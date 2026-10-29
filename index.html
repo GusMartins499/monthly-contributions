@@ -31,7 +31,7 @@
   /* Contribution calendar — Primer has no component for it, so it is built from Primer tokens only */
   .cal { display:grid; grid-template-columns:repeat(7, 1fr); gap:var(--base-size-4); max-width:420px; margin:0 auto; }
   .day { aspect-ratio:1; display:grid; place-items:center; font-size:var(--text-body-size-small, 12px);
-         border-radius:var(--borderRadius-small, 3px);
+         border-radius:var(--borderRadius-medium, 6px);
          outline:1px solid var(--contribution-default-borderColor-0); outline-offset:-1px; }
   /* Day-number color per level, picked for WCAG AA contrast in each theme */
   :root { --day-fg-3:var(--fgColor-default); --day-fg-4:var(--fgColor-onEmphasis); }
@@ -50,6 +50,19 @@
                  outline:1px solid var(--contribution-default-borderColor-0); outline-offset:-1px; }
   .logo { display:inline-grid; grid-template-columns:repeat(2, 10px); gap:3px; }
   .logo .legend-cell { outline:0; }
+
+  /* Month picker: Primer only squares the outer ends of an input-group, so square the middle input too */
+  .input-group .form-control:not(:first-child):not(:last-child) { border-radius:0; }
+  /* The native month picker renders 2px taller than Primer's 32px controls */
+  #month { height:32px; }
+  /* Small screens: stack the form into full-width rows */
+  @media (max-width: 543.98px) {
+    #f > * { width:100% !important; margin-right:0 !important; }
+  }
+
+  /* Stat cards: a grid keeps every card the same size and flush with the content edges */
+  .stats { display:grid; grid-template-columns:repeat(2, 1fr); grid-auto-rows:1fr; gap:var(--base-size-16); }
+  @media (min-width: 768px) { .stats { grid-template-columns:repeat(4, 1fr); } }
 </style>
 </head>
 <body>
@@ -165,11 +178,9 @@ function fetchYear(user, year) {
 }
 
 const stat = (value, label) => `
-  <div class="col-6 col-md-3 px-2 mb-3">
-    <div class="border rounded-2 px-3 py-2 height-full">
-      <div class="f2 text-semibold lh-condensed">${value}</div>
-      <div class="f6 color-fg-muted">${label}</div>
-    </div>
+  <div class="border rounded-2 px-3 py-2">
+    <div class="f2 text-semibold lh-condensed">${value}</div>
+    <div class="f6 color-fg-muted">${label}</div>
   </div>`;
 
 function skeleton() {
@@ -220,7 +231,7 @@ async function load() {
         </div>
       </div>
 
-      <div class="d-flex flex-wrap mx-n2 mb-1">
+      <div class="stats mb-4">
         ${stat(total.toLocaleString(LOCALE), 'contributions')}
         ${stat(`${active}<span class="f4 text-normal color-fg-muted"> / ${past.length || days.length}</span>`, 'active days')}
         ${stat(longest, 'longest streak (days)')}
